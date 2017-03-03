@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="http://cdn.pubnub.com/pubnub.min.js"></script>
+    <script type="text/javascript" src="http://pubnub.github.io/eon/v/eon/1.0.0/eon.js"></script>
+    <link type="text/css" rel="stylesheet" href="http://pubnub.github.io/eon/v/eon/1.0.0/eon.css" />
+
+  </head>
+  <body>
+    <h1>Stats:</h1>
+    <div id="chart">
+
+    </div>
+    <h1>Latest:</h1>
+    <div id="latest">
+
+    </div>
+      <script>
+
+        var countYes = 0;
+        var countNo = 0;
+
+        function countWord(str) {
+          return str.search(/friday/i);
+        }
+
+
+        var channel = 'pubnub-twitter';
+
+        var pubNub = PUBNUB.init({
+          subscribe_key: 'sub-c-78806dd4-42a6-11e4-aed8-02ee2ddab7fe'
+          }).subscribe({
+          channel : channel,
+          message : function(msg){
+            if (countWord(msg["text"]) !== -1) {
+              $('#latest').html(msg["text"]);
+              countYes++;
+            }
+            else {
+              countNo++;
+            }
+            $('#chart').html( countYes + " out of " + countNo + " Tweets about Friday since you opened this window.");
+
+          }
+        });
+
+
+      </script>
+
+  </body>
+</html>
